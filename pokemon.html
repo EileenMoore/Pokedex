@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pikachu.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="style.css">
+    <script src="pokemon.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <title>Pokedex</title>
+
+</head>
+
+<body onload="loadPokemon()">
+
+    <div id="pokedex">
+
+        <div>
+            <h1 id="pokemonName">Name</h1>
+            <div id="pokemonType"></div>
+
+            <div class="info-container">
+                <h1>About</h1>
+                <table>
+                    <tr>
+                        <td class="info-caption">
+                            Height
+                        </td>
+                        <td id="pokemonHeight">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-caption">
+                            Weight
+                        </td>
+                        <td id="pokemonWeight">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-caption">
+                            Abilities
+                        </td>
+                        <td id="pokemonAbilities">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+        <div>
+            <div id="pokemonOrder">Order</div>
+            <img id="pokemonImage">
+        </div>
+
+
+
+    </div>
+
+    <div>
+        <h2>Search for other Pokemon</h2>
+        <input id="pokemon" placeholder="Search" onchange="searchForPokemon()">
+        <div>
+            <button onclick="goToIndex()">Back to Overview</button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
