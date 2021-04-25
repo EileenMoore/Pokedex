@@ -1,23 +1,34 @@
-let pokemonSet1;
+let pokemonSet;
 let pokemonNames = [];
 let pokemonImages = [];
+let firstPokemonIndex = 0;
+let last_request = 0;
 
 async function showAllPokemon() {
-    let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=100`;
+    let url = `https://pokeapi.co/api/v2/pokemon?offset=${firstPokemonIndex}&limit=20`;
     let response = await fetch(url);
-    pokemonSet1 = await response.json();
+    pokemonSet = await response.json();
+    //console.log(pokemonSet);
     getPokemonNames();
     await getPokemonImages();
     renderAllPokemon();
 }
 
 function getPokemonNames() {
-    for (let index = 0; index < pokemonSet1.results.length; index++) {
-        const pokemonResult = pokemonSet1.results[index];
+    for (let index = 0; index < pokemonSet.results.length; index++) {
+        const pokemonResult = pokemonSet.results[index];
         pokemonNames.push(pokemonResult.name);
     }
     localStorage.setItem('pokemonNames', JSON.stringify(pokemonNames));
     console.log('pokemonNames ', pokemonNames);
+}
+
+
+async function getPokemonImages() {
+    for (let index = firstPokemonIndex; index < pokemonNames.length; index++) {
+        await loadCurrentPokemon(pokemonNames[index]);
+    }
+    //console.log('pokemonImages ', pokemonImages);
 }
 
 async function loadCurrentPokemon(pokemon) {
@@ -28,21 +39,35 @@ async function loadCurrentPokemon(pokemon) {
     pokemonImages.push(currentPokemonImage);
 }
 
-async function getPokemonImages() {
-    for (let index = 0; index < pokemonNames.length; index++) {
-        await loadCurrentPokemon(pokemonNames[index]);
-    }
-    //console.log('pokemonImages ', pokemonImages);
-}
-
-
 function renderAllPokemon() {
-    for (let index = 0; index < pokemonNames.length; index++) {
+    for (let index = firstPokemonIndex; index < pokemonNames.length; index++) {
         document.getElementById("allPokemons").innerHTML += `
         <div class="pokemon-container">${pokemonNames[index]}
-        <img onclick="goToPokemonByImage('${pokemonNames[index]}')" src="${pokemonImages[index]}">
+            <img onclick="goToPokemonByImage('${pokemonNames[index]}')" src="${pokemonImages[index]}">
         <div>
         `
+    }
+}
+
+window.onscroll = function() {
+    // let x = document.body.offsetHeight - window.pageYOffset;
+    // console.log('Differenz ', x);
+    // if ((document.body.offsetHeight - window.pageYOffset) < 800) {
+    //     firstPokemonIndex = firstPokemonIndex + 20;
+    //     console.log('index ', firstPokemonIndex);
+    //     showAllPokemon();
+    // }
+
+    let x = window.innerHeight + window.scrollY;
+    console.log('Differenz ', x);
+    console.log('bodyheightoffset ', document.body.offsetHeight);
+    let timPassedSinceLastRequest = new Date().getTime() - last_request;
+
+    if (((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) && timPassedSinceLastRequest > 5000) {
+        firstPokemonIndex = firstPokemonIndex + 20;
+        console.log('index ', firstPokemonIndex);
+        showAllPokemon();
+        last_request = new Date().getTime();
     }
 }
 
