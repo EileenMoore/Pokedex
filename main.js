@@ -10,7 +10,6 @@ async function showAllPokemon() {
     let url = `https://pokeapi.co/api/v2/pokemon?offset=${firstPokemonIndex}&limit=20`;
     let response = await fetch(url);
     pokemonSet = await response.json();
-    //console.log(pokemonSet);
     getPokemonNames();
     await getPokemonImages();
     renderAllPokemon();
@@ -38,15 +37,12 @@ function getPokemonNames() {
         const pokemonResult = pokemonSet.results[index];
         pokemonNames.push(pokemonResult.name);
     }
-    //console.log('pokemonNames ', pokemonNames);
 }
-
 
 async function getPokemonImages() {
     for (let index = firstPokemonIndex; index < pokemonNames.length; index++) {
         await loadCurrentPokemon(pokemonNames[index]);
     }
-    //console.log('pokemonImages ', pokemonImages);
 }
 
 async function loadCurrentPokemon(pokemon) {
@@ -61,7 +57,7 @@ function renderAllPokemon() {
     for (let index = firstPokemonIndex; index < pokemonNames.length; index++) {
         document.getElementById("allPokemons").innerHTML += `
         <div class="pokemon-container">${pokemonNames[index]}
-            <img onclick="goToPokemonByImage('${pokemonNames[index]}')" src="${pokemonImages[index]}">
+        <a href="pokemon.html?pokemon=${pokemonNames[index]}"><img src="${pokemonImages[index]}"></a>
         <div>
         `
     }
@@ -90,13 +86,7 @@ window.onscroll = function() {
 }
 
 function goToPokemon() {
-    pokemon = document.getElementById("searchPokemon").value.toLowerCase();
+    let pokemon = document.getElementById("searchPokemon").value.toLowerCase();
     document.getElementById("searchPokemon").value = '';
-    localStorage.setItem('pokemon', pokemon);
-    window.location.href = "pokemon.html";
-}
-
-function goToPokemonByImage(pokemon) {
-    localStorage.setItem('pokemon', pokemon);
-    window.location.href = "pokemon.html";
+    window.location.href = "pokemon.html?pokemon=" + pokemon;
 }

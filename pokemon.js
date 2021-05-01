@@ -1,16 +1,14 @@
-let pokemon;
 let currentPokemon;
 let allPokemon;
+const urlParams = new URLSearchParams(window.location.search);
+const pokemon = urlParams.get('pokemon');
 
 function searchForPokemon() {
-    pokemon = document.getElementById("pokemon").value.toLowerCase();
-    localStorage.setItem('pokemon', pokemon);
-    loadPokemon();
-    document.getElementById("pokemon").value = '';
+    let pokemon = document.getElementById("pokemon").value.toLowerCase();
+    window.location.href = "pokemon.html?pokemon=" + pokemon;
 }
 
 async function loadPokemon() {
-    pokemon = localStorage.getItem('pokemon');
     allPokemon = JSON.parse(localStorage.getItem('pokemonNames'));
 
     if (allPokemon.find(e => e == pokemon)) {
